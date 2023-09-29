@@ -1,6 +1,5 @@
-import { serve } from "./deps.js";
-import { configure, renderFile } from "./deps.js";
-
+import { serve } from "https://deno.land/std@0.202.0/http/server.ts";
+import { configure, renderFile } from "https://deno.land/x/eta@v2.2.0/mod.ts";
 import * as messageService from "./services/messageService.js";
 
 configure({
@@ -20,28 +19,29 @@ const redirectTo = (path) => {
   });
 };
 
-const addMessage = async (request) => {
-  const formData = await request.formData();
-
-  const sender= formData.get("sender");
-  const message = formData.get("message");
-
-  await messageService.add(sender, message);
-
-  return redirectTo("/");
-};
-
-
-const handleRequest = async (request) => {
+const listMessages = async () => {
   const data = {
-      message: await messageService.findLastFive()
+    messages: await messageService.findLastFiveMessages(),
   };
 
-  if (request.method === "POST") {
-      return await addMessage(request);
-  }
-
   return new Response(await renderFile("index.eta", data), responseDetails);
+};
+
+const addMessage = async (request) => {
+  const formData = await request.formData();
+  const sender = formData.get("sender");
+  const message = formData.get("message");
+
+  await messageService.create(sender, message);
+};
+
+const handleRequest = async (request) => {
+  if (request.method === "GET") {
+    return await listMessages();
+  } else if (request.method === "POST") {
+    await addMessage(request);
+    return redirectTo("/");
+  }
 };
 
 serve(handleRequest, { port: 7777 });

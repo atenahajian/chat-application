@@ -1,17 +1,11 @@
-<h1>Messages!</h1>
-
-<h2>Send new message</h2>
-
+<h1>This is the chat!</h1>
 <form method="POST">
-    Sender: <input type="text" name="sender" /><br/>
-    Message: <input type="text" name="message" /><br/>
-    <input type="submit" value="Send" />
+  <input type="text" name="sender" />
+  <input type="text" name="message" />
+  <input type="submit" value="Send a message!" />
 </form>
-
-
-<h2>Latest messages</h2>
-
-    <% it.message.forEach((m) => { %>
-        <br>
-        <%= m.sender %>: <%= m.message %>
-    <% }); %>
+<ul>
+  <% it.messages.forEach((msg) => { %>
+    <li><%= msg.sender %>: <%= msg.message %></li>
+  <% }); %>
+</ul>

@@ -1,18 +1,12 @@
 import { sql } from "../database/database.js";
 
-
-const add = async (sender, mess) => {
-    await sql`INSERT INTO messages (sender, message)
-    VALUES (${ sender }, ${ mess })`;
+const create = async (sender, message) => {
+  await sql`INSERT INTO messages (sender, message)
+    VALUES (${ sender }, ${ message })`;
 };
 
-
-const findAll = async () => {
-    return await sql`SELECT * FROM messages`;
+const findLastFiveMessages = async () => {
+  return await sql`SELECT * FROM messages ORDER BY id DESC LIMIT 5`;
 };
 
-const findLastFive = async () => {
-    return await sql`SELECT * FROM messages ORDER BY id DESC LIMIT 5;`;
-};
-
-export { add, findAll, findLastFive };
+export { create, findLastFiveMessages };
