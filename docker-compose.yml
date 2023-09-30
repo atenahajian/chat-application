@@ -23,7 +23,7 @@ services:
       - database.env
 
   flyway:
-    image: flyway/flyway:7.3.0-alpine
+    image: flyway/flyway
     env_file:
       - database.env
     depends_on:
