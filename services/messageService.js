@@ -1,4 +1,4 @@
-import { postgres } from "../database/database.js";
+import { sql } from "../database/database.js";
 
 const create = async (sender, message) => {
   await sql`INSERT INTO messages (sender, message)
